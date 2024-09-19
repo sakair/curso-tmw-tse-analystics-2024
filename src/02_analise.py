@@ -76,4 +76,3 @@ plt.legend(handles=handles, labels=labels)
 
 plt.savefig("../img/partidos_cor_raca_genero.png")
 plt.show()
-

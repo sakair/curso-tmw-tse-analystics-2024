@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlalchemy
 import streamlit as st
+from utils import make_scatter
 
 engine = sqlalchemy.create_engine("sqlite:///../../data/database.db")
 
@@ -15,8 +16,10 @@ uf_options = df["SG_UF"].unique().tolist()
 uf_options.remove("BR")
 uf_options = ["BR"] + uf_options
 
-estado = st.selectbox(label="Estado", placeholder="Selecione o estado para análise", options=uf_options)
+estado = st.sidebar.selectbox(label="Estado", placeholder="Selecione o estado para análise", options=uf_options)
 
-df_uf = df[df["SG_UF"] == estado]
+data = df[df["SG_UF"] == estado]
 
-st.dataframe(df_uf)
+fig = make_scatter(data, size=True)
+
+st.pyplot(fig)

@@ -6,3 +6,4 @@
 *.zip
 *.jpeg
 *.idea
+__pycache__
