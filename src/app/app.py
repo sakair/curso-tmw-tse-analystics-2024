@@ -17,9 +17,11 @@ uf_options.remove("BR")
 uf_options = ["BR"] + uf_options
 
 estado = st.sidebar.selectbox(label="Estado", placeholder="Selecione o estado para análise", options=uf_options)
+size = st.sidebar.checkbox("Tamanho das bolhas")
+cluster = st.sidebar.checkbox("Definir cluster")
 
 data = df[df["SG_UF"] == estado]
 
-fig = make_scatter(data, size=True)
+fig = make_scatter(data, cluster=cluster, size=size)
 
 st.pyplot(fig)

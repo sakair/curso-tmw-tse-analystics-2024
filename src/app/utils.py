@@ -18,7 +18,6 @@ def make_scatter(data, cluster=False, size=False):
 
     if not cluster:
         del config['hue']
-        del config['palette']
 
     if not size:
         del config['size']
