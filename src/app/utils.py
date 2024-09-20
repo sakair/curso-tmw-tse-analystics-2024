@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from adjustText import adjust_text
+from sklearn import cluster
 
 
 def make_scatter(data, cluster=False, size=False):
@@ -11,7 +12,7 @@ def make_scatter(data, cluster=False, size=False):
         "y":"tx_raca_cor_preta",
         "size":"total_candidaturas",
         "sizes":(10, 200),
-        "hue":"clusterBR",
+        "hue":"cluster",
         "palette":"viridis",
         "alpha":0.6
     }
@@ -49,22 +50,22 @@ def make_scatter(data, cluster=False, size=False):
     plt.xlabel("Taxa de mulheres")
     plt.ylabel("Taxa de pessoas pretas")
 
-    tx_cor_raca_preta = data["tx_raca_cor_preta"].sum() / data["total_candidaturas"].sum()
-    tx_feminino = data["tx_feminino"].sum() / data["total_candidaturas"].sum()
+    tx_cor_raca_preta = data["total_raca_cor_preta"].sum() / data["total_candidaturas"].sum()
+    tx_feminino = data["total_feminino"].sum() / data["total_candidaturas"].sum()
 
     plt.hlines(y=tx_cor_raca_preta,
-               xmin=0.3,
-               xmax=0.55,
+               xmin=data["tx_feminino"].min(),
+               xmax=data["tx_feminino"].max(),
                colors="black",
                linestyles="--",
-               label=f"Taxa pretos: {100 * tx_cor_raca_preta:.2f}%"
+               label=f"Taxa pretos: {100*tx_cor_raca_preta:.0f}%"
                )
     plt.vlines(x=tx_feminino,
-               ymin=0.05,
-               ymax=0.35,
+               ymin=data["tx_raca_cor_preta"].min(),
+               ymax=data["tx_raca_cor_preta"].max(),
                colors="tomato",
                linestyles="--",
-               label=f"Taxa mulheres: {100 * tx_feminino:.2f}%"
+               label=f"Taxa mulheres: {100*tx_feminino:.0f}%"
                )
 
     handles, labels = plt.gca().get_legend_handles_labels()
@@ -74,3 +75,9 @@ def make_scatter(data, cluster=False, size=False):
     plt.legend(handles=handles, labels=labels)
 
     return fig
+
+def make_clusters(data, n=6):
+    model = cluster.KMeans(n_clusters=n, random_state=42)
+    model.fit(data[["tx_feminino", "tx_raca_cor_preta"]])
+    data["cluster"] = model.labels_
+    return data
