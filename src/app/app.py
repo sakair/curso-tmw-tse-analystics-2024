@@ -13,6 +13,7 @@ df = pd.read_sql(query, engine)
 st.markdown("## TSE Analytics - Eleições 2024")
 
 uf_options = df["SG_UF"].unique().tolist()
+uf_options.sort()
 uf_options.remove("BR")
 uf_options = ["BR"] + uf_options
 
