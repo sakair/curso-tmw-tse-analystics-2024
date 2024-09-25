@@ -79,4 +79,19 @@ UNION ALL
 SELECT * FROM tb_group_uf
 )
 
-SELECT * FROM tb_union_all;
+ SELECT
+        SG_PARTIDO,
+        NM_PARTIDO,
+        SG_UF,
+        DS_CARGO,
+        AVG(CASE WHEN DS_GENERO = 'FEMININO' THEN 1 ELSE 0 END) AS tx_feminino,
+        SUM(CASE WHEN DS_GENERO = 'FEMININO' THEN 1 ELSE 0 END) AS total_feminino,
+        AVG(CASE WHEN DS_COR_RACA = 'PRETA' THEN 1 ELSE 0 END) AS tx_raca_cor_preta,
+        SUM(CASE WHEN DS_COR_RACA = 'PRETA' THEN 1 ELSE 0 END) AS total_raca_cor_preta,
+        AVG(CASE WHEN DS_COR_RACA IN ('PRETA', 'PARDA') THEN 1 ELSE 0 END) AS tx_raca_cor_preta_parda,
+        SUM(CASE WHEN DS_COR_RACA IN ('PRETA', 'PARDA') THEN 1 ELSE 0 END) AS total_raca_cor_preta_parda,
+        AVG(CASE WHEN DS_COR_RACA <> 'BRANCA' THEN 1 ELSE 0 END) AS tx_raca_cor_nao_branca,
+        SUM(CASE WHEN DS_COR_RACA <> 'BRANCA' THEN 1 ELSE 0 END) AS total_raca_cor_nao_branca,
+        count(*) AS total_candidaturas
+ FROM tb_info_completa_cand AS t1
+ GROUP BY 1,2,3,4;
